@@ -7,10 +7,18 @@ const progressLine = document.querySelector(".progress-rail-line i");
 function updateScrollState() {
   const openingDistance = Math.max(1, openingScene.offsetHeight - window.innerHeight);
   const openingProgress = Math.min(1, Math.max(0, (window.scrollY - openingScene.offsetTop) / openingDistance));
+  const doorProgress = openingProgress * openingProgress * (3 - 2 * openingProgress);
   const pageDistance = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
   const pageProgress = Math.min(1, Math.max(0, window.scrollY / pageDistance));
 
   root.style.setProperty("--open-progress", openingProgress.toFixed(3));
+  root.style.setProperty("--door-left-angle", `${(-104 * doorProgress).toFixed(2)}deg`);
+  root.style.setProperty("--door-right-angle", `${(104 * doorProgress).toFixed(2)}deg`);
+  root.style.setProperty("--door-shade", Math.max(0.54, 1 - doorProgress * 0.46).toFixed(3));
+  root.style.setProperty("--reveal-blur", `${(12 * (1 - doorProgress)).toFixed(2)}px`);
+  root.style.setProperty("--reveal-brightness", (0.58 + doorProgress * 0.42).toFixed(3));
+  root.style.setProperty("--light-spread", (0.018 + doorProgress * 0.982).toFixed(3));
+  root.style.setProperty("--seam-opacity", Math.max(0, 1 - doorProgress * 2.4).toFixed(3));
   root.style.setProperty("--page-progress", pageProgress.toFixed(3));
   progressLine.style.height = `${pageProgress * 100}%`;
 
@@ -24,6 +32,28 @@ function updateScrollState() {
 window.addEventListener("scroll", updateScrollState, { passive: true });
 window.addEventListener("resize", updateScrollState);
 updateScrollState();
+
+const openingParticles = document.querySelector(".opening-particles");
+if (openingParticles) {
+  const fragment = document.createDocumentFragment();
+  const randomBetween = (minimum, maximum) => Math.random() * (maximum - minimum) + minimum;
+
+  for (let index = 0; index < 42; index += 1) {
+    const isPetal = index >= 30;
+    const particle = document.createElement("span");
+    particle.className = `opening-particle ${isPetal ? "opening-particle-petal" : "opening-particle-dust"}`;
+    particle.style.setProperty("--particle-x", `${randomBetween(2, 98).toFixed(2)}%`);
+    particle.style.setProperty("--particle-size", `${randomBetween(isPetal ? 5 : 1, isPetal ? 11 : 3.4).toFixed(2)}px`);
+    particle.style.setProperty("--particle-duration", `${randomBetween(isPetal ? 9 : 8, isPetal ? 17 : 18).toFixed(2)}s`);
+    particle.style.setProperty("--particle-delay", `${randomBetween(-18, 0).toFixed(2)}s`);
+    particle.style.setProperty("--particle-drift", `${randomBetween(-140, 140).toFixed(1)}px`);
+    particle.style.setProperty("--particle-opacity", randomBetween(0.22, isPetal ? 0.68 : 0.72).toFixed(2));
+    particle.style.setProperty("--particle-spin", `${randomBetween(240, 780).toFixed(1)}deg`);
+    fragment.appendChild(particle);
+  }
+
+  openingParticles.appendChild(fragment);
+}
 
 const revealObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach((entry) => {
