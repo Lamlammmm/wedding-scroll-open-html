@@ -133,6 +133,7 @@ document.querySelectorAll("[data-lightbox]").forEach((card) => {
     lightboxImage.src = card.dataset.lightbox;
     lightboxImage.alt = card.querySelector("img").alt;
     lightboxCaption.textContent = card.dataset.caption;
+    lightboxCaption.classList.toggle("couple-names", card.dataset.caption === "Thu Hương & Văn Lâm");
     lightbox.showModal();
   });
 });
