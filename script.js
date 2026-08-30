@@ -34,6 +34,28 @@ window.addEventListener("scroll", updateScrollState, { passive: true });
 window.addEventListener("resize", updateScrollState);
 updateScrollState();
 
+let openingTouchStartY = 0;
+
+openingScene.addEventListener("touchstart", (event) => {
+  if (!window.matchMedia("(max-width: 48rem)").matches) return;
+  openingTouchStartY = event.touches[0].clientY;
+}, { passive: true });
+
+openingScene.addEventListener("touchend", (event) => {
+  if (!window.matchMedia("(max-width: 48rem)").matches) return;
+
+  const openingDistance = Math.max(1, openingScene.offsetHeight - window.innerHeight);
+  const openingProgress = Math.min(1, Math.max(0, (window.scrollY - openingScene.offsetTop) / openingDistance));
+  const swipeDistance = openingTouchStartY - event.changedTouches[0].clientY;
+
+  if (openingProgress < 0.98 && swipeDistance > 12) {
+    window.scrollTo({
+      top: openingScene.offsetTop + openingDistance,
+      behavior: "smooth",
+    });
+  }
+}, { passive: true });
+
 const openingParticles = document.querySelector(".opening-particles");
 if (openingParticles) {
   const fragment = document.createDocumentFragment();
@@ -173,18 +195,38 @@ lightbox.querySelector(".dialog-close").addEventListener("click", () => lightbox
 
 const audio = document.querySelector("#wedding-audio");
 const musicToggle = document.querySelector(".music-toggle");
+
+function setMusicState(isPlaying) {
+  musicToggle.classList.toggle("is-playing", isPlaying);
+  musicToggle.setAttribute("aria-pressed", String(isPlaying));
+  musicToggle.setAttribute("aria-label", isPlaying ? "Tắt nhạc nền" : "Bật nhạc nền");
+}
+
+function startMusic() {
+  return audio.play().then(() => setMusicState(true));
+}
+
+function removeAutoplayFallback() {
+  document.removeEventListener("pointerdown", autoplayFallback);
+  document.removeEventListener("keydown", autoplayFallback);
+}
+
+function autoplayFallback(event) {
+  if (event.target.closest?.(".music-toggle")) return;
+  startMusic().then(removeAutoplayFallback).catch(() => undefined);
+}
+
+startMusic().then(removeAutoplayFallback).catch(() => {
+  document.addEventListener("pointerdown", autoplayFallback);
+  document.addEventListener("keydown", autoplayFallback);
+});
+
 musicToggle.addEventListener("click", () => {
   if (audio.paused) {
-    audio.play().then(() => {
-      musicToggle.classList.add("is-playing");
-      musicToggle.setAttribute("aria-pressed", "true");
-      musicToggle.setAttribute("aria-label", "Tắt nhạc nền");
-    }).catch(() => undefined);
+    startMusic().then(removeAutoplayFallback).catch(() => undefined);
   } else {
     audio.pause();
-    musicToggle.classList.remove("is-playing");
-    musicToggle.setAttribute("aria-pressed", "false");
-    musicToggle.setAttribute("aria-label", "Bật nhạc nền");
+    setMusicState(false);
   }
 });
 
