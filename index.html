@@ -188,10 +188,17 @@
       </div>
     </dialog>
 
-    <dialog class="lightbox" id="lightbox" aria-label="Xem ảnh cưới">
+    <dialog class="lightbox" id="lightbox" aria-label="Xem ảnh cưới" aria-describedby="lightbox-counter">
       <button class="dialog-close" type="button" aria-label="Đóng ảnh">×</button>
-      <img class="lightbox-image" src="" alt="" />
-      <p class="lightbox-caption"></p>
+      <div class="lightbox-stage">
+        <button class="lightbox-arrow lightbox-arrow-prev" type="button" aria-label="Xem ảnh trước">←</button>
+        <img class="lightbox-image" src="" alt="" draggable="false" />
+        <button class="lightbox-arrow lightbox-arrow-next" type="button" aria-label="Xem ảnh tiếp theo">→</button>
+      </div>
+      <div class="lightbox-meta" aria-live="polite">
+        <p class="lightbox-caption"></p>
+        <p class="lightbox-counter" id="lightbox-counter"></p>
+      </div>
     </dialog>
 
     <audio id="wedding-audio" autoplay loop preload="auto" src="assets/audio/van-lam-thu-huong.mp3"></audio>

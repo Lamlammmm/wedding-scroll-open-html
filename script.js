@@ -142,8 +142,13 @@ const giftTrigger = document.querySelector(".gift-trigger");
 const lightbox = document.querySelector("#lightbox");
 const lightboxImage = document.querySelector(".lightbox-image");
 const lightboxCaption = document.querySelector(".lightbox-caption");
+const lightboxCounter = document.querySelector(".lightbox-counter");
+const lightboxPrev = document.querySelector(".lightbox-arrow-prev");
+const lightboxNext = document.querySelector(".lightbox-arrow-next");
 const galleryCards = [...document.querySelectorAll(".gallery-card")];
 let galleryIndex = 0;
+let lightboxIndex = 0;
+let lightboxTouchStart = null;
 
 function updateGallery() {
   const length = galleryCards.length;
@@ -162,6 +167,34 @@ function moveGallery(direction) {
   updateGallery();
 }
 
+function updateLightbox(index) {
+  lightboxIndex = (index + galleryCards.length) % galleryCards.length;
+  galleryIndex = lightboxIndex;
+  updateGallery();
+
+  const card = galleryCards[lightboxIndex];
+  const image = card.querySelector("img");
+  const previousCard = galleryCards[(lightboxIndex - 1 + galleryCards.length) % galleryCards.length];
+  const nextCard = galleryCards[(lightboxIndex + 1) % galleryCards.length];
+
+  lightboxImage.src = card.dataset.lightbox;
+  lightboxImage.alt = image.alt;
+  lightboxCaption.textContent = card.dataset.caption;
+  lightboxCaption.classList.toggle("couple-names", card.dataset.caption === "Thu Hương & Văn Lâm");
+  lightboxCounter.textContent = `${lightboxIndex + 1} / ${galleryCards.length}`;
+  lightboxPrev.setAttribute("aria-label", `Xem ảnh trước: ${previousCard.dataset.caption}`);
+  lightboxNext.setAttribute("aria-label", `Xem ảnh tiếp theo: ${nextCard.dataset.caption}`);
+
+  [previousCard, nextCard].forEach((nearbyCard) => {
+    const preloadImage = new Image();
+    preloadImage.src = nearbyCard.dataset.lightbox;
+  });
+}
+
+function moveLightbox(direction) {
+  updateLightbox(lightboxIndex + direction);
+}
+
 document.querySelector(".gallery-arrow-prev").addEventListener("click", () => moveGallery(-1));
 document.querySelector(".gallery-arrow-next").addEventListener("click", () => moveGallery(1));
 updateGallery();
@@ -176,22 +209,50 @@ giftDialog.querySelector(".dialog-close").addEventListener("click", () => {
   giftTrigger.setAttribute("aria-expanded", "false");
 });
 
-document.querySelectorAll("[data-lightbox]").forEach((card) => {
+galleryCards.forEach((card, index) => {
   card.addEventListener("click", (event) => {
     if (card.classList.contains("gallery-card") && !card.classList.contains("is-active")) {
       event.preventDefault();
       moveGallery(card.classList.contains("is-next") ? 1 : -1);
       return;
     }
-    lightboxImage.src = card.dataset.lightbox;
-    lightboxImage.alt = card.querySelector("img").alt;
-    lightboxCaption.textContent = card.dataset.caption;
-    lightboxCaption.classList.toggle("couple-names", card.dataset.caption === "Thu Hương & Văn Lâm");
+    updateLightbox(index);
     lightbox.showModal();
   });
 });
 
+lightboxPrev.addEventListener("click", () => moveLightbox(-1));
+lightboxNext.addEventListener("click", () => moveLightbox(1));
 lightbox.querySelector(".dialog-close").addEventListener("click", () => lightbox.close());
+
+lightbox.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    moveLightbox(-1);
+  }
+  if (event.key === "ArrowRight") {
+    event.preventDefault();
+    moveLightbox(1);
+  }
+});
+
+lightboxImage.addEventListener("touchstart", (event) => {
+  const touch = event.changedTouches[0];
+  lightboxTouchStart = { x: touch.clientX, y: touch.clientY };
+}, { passive: true });
+
+lightboxImage.addEventListener("touchend", (event) => {
+  if (!lightboxTouchStart) return;
+
+  const touch = event.changedTouches[0];
+  const distanceX = touch.clientX - lightboxTouchStart.x;
+  const distanceY = touch.clientY - lightboxTouchStart.y;
+  lightboxTouchStart = null;
+
+  if (Math.abs(distanceX) >= 45 && Math.abs(distanceX) > Math.abs(distanceY)) {
+    moveLightbox(distanceX > 0 ? -1 : 1);
+  }
+}, { passive: true });
 
 const audio = document.querySelector("#wedding-audio");
 const musicToggle = document.querySelector(".music-toggle");
