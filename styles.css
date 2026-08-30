@@ -690,7 +690,7 @@ dialog::backdrop { background: rgb(25 2 5 / 0.78); backdrop-filter: blur(0.4rem)
   .opening-particle:nth-child(2n) { display: none; }
   .site-header { grid-template-columns: 2.6rem 1fr auto; padding-top: 0.75rem; }
   .site-header nav { display: none; }
-  .header-date { font-size: 0.7rem; }
+  .header-date { grid-column: 3; justify-self: end; font-size: 0.7rem; }
   .section-inner { padding-block: 5rem; }
   .section-flower { width: 70vw; }
   .narrow-copy > p:not(.section-kicker):not(.signature) { font-size: 1.15rem; text-align: center; }
