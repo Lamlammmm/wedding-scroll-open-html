@@ -20,6 +20,7 @@ function updateScrollState() {
   root.style.setProperty("--light-spread", (0.018 + doorProgress * 0.982).toFixed(3));
   root.style.setProperty("--seam-opacity", Math.max(0, 1 - doorProgress * 2.4).toFixed(3));
   root.style.setProperty("--page-progress", pageProgress.toFixed(3));
+  root.classList.toggle("is-opening-complete", openingProgress >= 0.98);
   progressLine.style.height = `${pageProgress * 100}%`;
 
   let guideIndex = 0;

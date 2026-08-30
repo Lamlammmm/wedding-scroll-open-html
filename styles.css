@@ -258,7 +258,7 @@ img { display: block; max-width: 100%; }
 .guide-heading {
   margin: 0 0 0.75rem;
   color: var(--gold-light);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   letter-spacing: 0.22em;
   line-height: 1.3;
   text-transform: uppercase;
@@ -370,7 +370,7 @@ img { display: block; max-width: 100%; }
 .doorway-copy p {
   margin: 0 0 1rem;
   color: var(--gold-light);
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
 }
@@ -392,10 +392,11 @@ img { display: block; max-width: 100%; }
   font-size: clamp(4.6rem, 7.2vw, 7.2rem);
   font-weight: 400;
   letter-spacing: 0;
-  line-height: 0.76;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.doorway-card .couple-names-card span { color: var(--gold-light); }
+.doorway-card .couple-names-card span { display: inline-block; width: 100%; color: var(--gold-light); text-align: center; }
 
 .doorway-card small {
   position: relative;
@@ -403,7 +404,7 @@ img { display: block; max-width: 100%; }
   display: block;
   margin-top: 1.8rem;
   color: rgb(247 240 230 / 0.72);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   letter-spacing: 0.26em;
   line-height: 1.4;
 }
@@ -528,14 +529,15 @@ img { display: block; max-width: 100%; }
 .opening-scroll-hint { position: absolute; right: clamp(2rem, 7vw, 7rem); bottom: 2rem; z-index: 7; margin: 0; color: rgb(247 240 230 / 0.66); font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; }
 .opening-scroll-hint span { margin-left: 0.4rem; color: var(--gold-light); font-size: 1rem; }
 
-.site-header { position: fixed; top: 0; right: 0; left: 0; z-index: 80; display: grid; grid-template-columns: 3rem 1fr auto; align-items: center; gap: 1rem; padding: 1rem var(--page-gutter); color: var(--cream); opacity: var(--open-progress); transition: background 300ms ease, opacity 240ms ease; }
+.site-header { position: fixed; top: 0; right: 0; left: 0; z-index: 80; display: grid; grid-template-columns: 3rem 1fr auto; align-items: center; gap: 1rem; padding: 1rem var(--page-gutter); color: var(--cream); background: linear-gradient(90deg, rgb(83 7 19 / 0.96), rgb(49 4 12 / 0.94)); box-shadow: 0 0.5rem 1.8rem rgb(30 0 6 / 0.2); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-100%); backdrop-filter: blur(0.7rem); transition: background 300ms ease, box-shadow 300ms ease, opacity 300ms ease, transform 300ms ease, visibility 300ms; }
+.is-opening-complete .site-header { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); }
 .site-header::after { position: absolute; right: var(--page-gutter); bottom: 0; left: var(--page-gutter); height: 1px; background: rgb(247 240 230 / 0.2); content: ""; }
-.brand { position: relative; z-index: 1; display: grid; width: 2.6rem; height: 2.6rem; place-items: center; border: 1px solid var(--gold-light); border-radius: 50%; }
+.brand { position: relative; z-index: 1; display: grid; width: 2.6rem; height: 2.6rem; place-items: center; }
 .brand img { width: 2.1rem; height: 2.1rem; object-fit: contain; }
-.site-header nav { display: flex; justify-content: center; gap: clamp(1rem, 2.4vw, 2.4rem); font-size: 0.7rem; letter-spacing: 0.13em; text-transform: uppercase; }
+.site-header nav { display: flex; justify-content: center; gap: clamp(1rem, 2.4vw, 2.4rem); font-size: 0.8rem; letter-spacing: 0.13em; text-transform: uppercase; }
 .site-header nav a { opacity: 0.78; transition: color 200ms ease, opacity 200ms ease; }
 .site-header nav a:hover { color: var(--gold-light); opacity: 1; }
-.header-date { font-size: 0.7rem; letter-spacing: 0.18em; }
+.header-date { font-size: 0.8rem; letter-spacing: 0.18em; }
 
 .paper-section { position: relative; overflow: hidden; background: var(--paper); }
 .section-inner { position: relative; z-index: 2; width: min(100%, 78rem); margin: 0 auto; padding: clamp(5.5rem, 12vw, 10rem) var(--page-gutter); }
@@ -555,23 +557,23 @@ img { display: block; max-width: 100%; }
 .countdown-section { position: relative; overflow: hidden; background: var(--burgundy); color: var(--cream); }
 .countdown-section::before { position: absolute; inset: 8%; border: 1px solid rgb(234 211 167 / 0.16); content: ""; pointer-events: none; }
 .countdown-section h2 { color: var(--cream); }
-.countdown-section .section-kicker { color: var(--gold-light); }
+.countdown-section .section-kicker { color: var(--gold-light); font-size: 0.8rem; }
 .countdown { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 45rem; margin: 3.5rem auto 0; border-top: 1px solid rgb(234 211 167 / 0.32); border-bottom: 1px solid rgb(234 211 167 / 0.32); }
 .countdown > div { padding: 1.5rem 0.5rem; border-right: 1px solid rgb(234 211 167 / 0.22); }
 .countdown > div:last-child { border-right: 0; }
 .countdown strong { display: block; color: var(--gold-light); font-family: var(--serif); font-size: clamp(2.7rem, 7vw, 5rem); font-weight: 400; line-height: 1; }
-.countdown span { color: rgb(247 240 230 / 0.66); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+.countdown span { color: rgb(247 240 230 / 0.66); font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
 
 .date-section { position: relative; overflow: hidden; background: linear-gradient(105deg, #f3e8d8, var(--paper)); }
 .date-section::before { position: absolute; top: 10%; right: -12rem; width: 32rem; height: 32rem; border: 1px solid rgb(112 21 29 / 0.16); border-radius: 50%; content: ""; }
 .date-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.78fr); gap: clamp(2rem, 8vw, 9rem); align-items: center; }
 .date-number { color: var(--burgundy); font-family: var(--serif); font-size: clamp(14rem, 30vw, 30rem); font-weight: 400; letter-spacing: -0.1em; line-height: 0.65; }
-.date-copy { position: relative; z-index: 2; }
+.date-copy { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .date-copy .section-kicker { margin-bottom: 2rem; }
 .date-copy .weekday { margin: 0; color: var(--muted); font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; }
-.date-copy h2 { margin-top: 0.5rem; font-family: var(--serif); font-size: clamp(3.4rem, 8vw, 7.5rem); line-height: 0.98; text-wrap: balance; }
+.date-copy h2 { width: 100%; margin-top: 0.5rem; font-family: var(--serif); font-size: clamp(3.4rem, 8vw, 7.5rem); line-height: 0.98; text-align: center; text-wrap: balance; }
 .date-copy h2 span { color: var(--gold); }
-.lunar-date { margin: 2rem 0; color: var(--muted); font-size: 0.74rem; letter-spacing: 0.08em; }
+.lunar-date { width: 100%; margin: 2rem 0; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.08em; text-align: center; }
 .gold-button { display: inline-flex; min-height: 3.2rem; padding: 0.8rem 1.2rem; align-items: center; gap: 0.8rem; border: 1px solid var(--gold); background: var(--gold); color: var(--burgundy-deep); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; transition: transform 220ms ease, background 220ms ease; }
 .gold-button:hover { background: var(--gold-light); transform: translateY(-2px); }
 
@@ -616,7 +618,7 @@ img { display: block; max-width: 100%; }
 .gift-backdrop { position: absolute; inset: 0; background: radial-gradient(circle at 50% 35%, rgb(202 163 101 / 0.26), transparent 30rem), linear-gradient(135deg, transparent 35%, rgb(111 21 29 / 0.62)); }
 .gift-section h2 { color: var(--cream); font-style: italic; }
 .gift-section .section-kicker { color: var(--gold-light); }
-.gift-section p:last-child { max-width: 29rem; margin: 2rem auto 0; color: rgb(247 240 230 / 0.68); }
+.gift-section p:last-child { max-width: 36rem; margin: 2rem auto 0; color: rgb(247 240 230 / 0.68); font-size: 1rem; }
 .gift-envelopes { position: relative; display: grid; width: min(100%, 27rem); height: 19rem; margin: 2.5rem auto 0; padding: 0; place-items: center; border: 0; background: transparent; color: inherit; cursor: pointer; }
 .gift-envelope { position: absolute; top: 1.5rem; width: 10.5rem; height: 15rem; border: 1px solid rgb(234 211 167 / 0.72); border-radius: 0.7rem; background: linear-gradient(145deg, #8f2027, #5d1016 72%); box-shadow: 0 1.3rem 2.4rem rgb(20 3 5 / 0.34); transition: transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1), filter 300ms ease; }
 .gift-envelope::before { position: absolute; inset: 0 0 auto; height: 5.7rem; border-bottom: 1px solid rgb(234 211 167 / 0.55); background: linear-gradient(155deg, transparent 49%, rgb(234 211 167 / 0.3) 50%, transparent 51%); clip-path: polygon(0 0, 100% 0, 50% 100%); content: ""; }
@@ -625,7 +627,7 @@ img { display: block; max-width: 100%; }
 .gift-envelope-groom { right: 4rem; transform: rotate(10deg) translateY(0.8rem); }
 .gift-envelopes:hover .gift-envelope-bride, .gift-envelopes:focus-visible .gift-envelope-bride { transform: rotate(-13deg) translate(-0.35rem, -0.35rem); filter: brightness(1.08); }
 .gift-envelopes:hover .gift-envelope-groom, .gift-envelopes:focus-visible .gift-envelope-groom { transform: rotate(13deg) translate(0.35rem, 0.25rem); filter: brightness(1.08); }
-.gift-tap-text { position: absolute; bottom: 0; color: rgb(247 240 230 / 0.78); font-size: 0.66rem; letter-spacing: 0.15em; line-height: 1.4; text-transform: uppercase; }
+.gift-tap-text { position: absolute; bottom: 0; color: rgb(247 240 230 / 0.78); font-size: 0.8rem; letter-spacing: 0.15em; line-height: 1.4; text-transform: uppercase; }
 
 dialog { max-width: min(42rem, calc(100% - 2rem)); border: 1px solid var(--gold); background: var(--paper); color: var(--ink); box-shadow: 0 2rem 5rem rgb(15 1 3 / 0.35); }
 dialog::backdrop { background: rgb(25 2 5 / 0.78); backdrop-filter: blur(0.4rem); }
@@ -645,8 +647,8 @@ dialog::backdrop { background: rgb(25 2 5 / 0.78); backdrop-filter: blur(0.4rem)
 .lightbox .dialog-close { border-color: rgb(234 211 167 / 0.5); color: var(--gold-light); }
 
 .site-footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding: 2rem var(--page-gutter); background: #160204; color: var(--gold-light); }
-.site-footer p { margin: 0; font-size: 0.7rem; letter-spacing: 0.18em; }
-.site-footer > a { justify-self: center; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.site-footer p { margin: 0; font-size: 0.8rem; letter-spacing: 0.18em; }
+.site-footer > a { justify-self: center; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .music-toggle { justify-self: end; width: 2.7rem; height: 2.7rem; border: 1px solid var(--gold); border-radius: 50%; background: transparent; color: var(--gold-light); cursor: pointer; }
 .music-toggle.is-playing { background: var(--gold); color: var(--burgundy-deep); }
 
@@ -673,9 +675,9 @@ dialog::backdrop { background: rgb(25 2 5 / 0.78); backdrop-filter: blur(0.4rem)
   .doorway-copy { width: 100%; justify-self: center; padding: 0; text-align: center; }
   .doorway-copy::before { margin-right: auto; margin-bottom: 0.75rem; margin-left: auto; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); }
   .doorway-copy::after { top: 46%; left: 50%; width: min(70vw, 18rem); transform: translate(-50%, -50%); }
-  .doorway-copy p { margin-bottom: 0.45rem; font-size: 0.54rem; }
-  .doorway-card .couple-names-card { font-size: clamp(3.2rem, 15vw, 4.6rem); line-height: 0.72; }
-  .doorway-card small { margin-top: 0.8rem; font-size: 0.58rem; }
+  .doorway-copy p { margin-bottom: 0.45rem; font-size: 0.8rem; }
+  .doorway-card .couple-names-card { font-size: clamp(3.2rem, 15vw, 4.6rem); line-height: 1; }
+  .doorway-card small { margin-top: 0.8rem; font-size: 0.8rem; }
   .doorway-photo { width: min(72vw, 20rem); height: 100%; justify-self: center; border-radius: 50% 50% 0.65rem 0.65rem / 34% 34% 0.65rem 0.65rem; }
   .door-panel { inset: 8% 6%; }
   .door-symbol { width: clamp(5rem, 23vw, 7rem); }
@@ -688,10 +690,12 @@ dialog::backdrop { background: rgb(25 2 5 / 0.78); backdrop-filter: blur(0.4rem)
   .opening-particle:nth-child(2n) { display: none; }
   .site-header { grid-template-columns: 2.6rem 1fr auto; padding-top: 0.75rem; }
   .site-header nav { display: none; }
-  .header-date { font-size: 0.62rem; }
+  .header-date { font-size: 0.7rem; }
   .section-inner { padding-block: 5rem; }
   .section-flower { width: 70vw; }
   .narrow-copy > p:not(.section-kicker):not(.signature) { font-size: 1.15rem; text-align: center; }
+  #invitation-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+  #invitation-title span { white-space: normal; }
   .date-layout { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
   .date-number { font-size: clamp(11rem, 50vw, 18rem); text-align: center; }
   .date-copy .section-kicker { margin-bottom: 1rem; }
