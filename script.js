@@ -30,31 +30,20 @@ function updateScrollState() {
   openingGuideItems.forEach((item, index) => item.classList.toggle("is-active", index === guideIndex));
 }
 
-window.addEventListener("scroll", updateScrollState, { passive: true });
-window.addEventListener("resize", updateScrollState);
+let scrollUpdateScheduled = false;
+
+function scheduleScrollStateUpdate() {
+  if (scrollUpdateScheduled) return;
+  scrollUpdateScheduled = true;
+  window.requestAnimationFrame(() => {
+    updateScrollState();
+    scrollUpdateScheduled = false;
+  });
+}
+
+window.addEventListener("scroll", scheduleScrollStateUpdate, { passive: true });
+window.addEventListener("resize", scheduleScrollStateUpdate, { passive: true });
 updateScrollState();
-
-let openingTouchStartY = 0;
-
-openingScene.addEventListener("touchstart", (event) => {
-  if (!window.matchMedia("(max-width: 48rem)").matches) return;
-  openingTouchStartY = event.touches[0].clientY;
-}, { passive: true });
-
-openingScene.addEventListener("touchend", (event) => {
-  if (!window.matchMedia("(max-width: 48rem)").matches) return;
-
-  const openingDistance = Math.max(1, openingScene.offsetHeight - window.innerHeight);
-  const openingProgress = Math.min(1, Math.max(0, (window.scrollY - openingScene.offsetTop) / openingDistance));
-  const swipeDistance = openingTouchStartY - event.changedTouches[0].clientY;
-
-  if (openingProgress < 0.98 && swipeDistance > 12) {
-    window.scrollTo({
-      top: openingScene.offsetTop + openingDistance,
-      behavior: "smooth",
-    });
-  }
-}, { passive: true });
 
 const openingParticles = document.querySelector(".opening-particles");
 if (openingParticles) {

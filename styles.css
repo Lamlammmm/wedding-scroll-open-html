@@ -258,7 +258,7 @@ img { display: block; max-width: 100%; }
 .guide-heading {
   margin: 0 0 0.75rem;
   color: var(--gold-light);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   letter-spacing: 0.22em;
   line-height: 1.3;
   text-transform: uppercase;
@@ -412,9 +412,11 @@ img { display: block; max-width: 100%; }
 .doorway-photo {
   position: relative;
   z-index: 2;
-  width: min(100%, 31rem);
+  /* Khung hẹp hơn để ảnh chân dung giữ được nhiều chiều cao hơn. */
+  width: min(100%, 24rem);
   height: 100%;
   justify-self: start;
+  transform: translateX(clamp(3rem, 5vw, 5rem));
   overflow: hidden;
   border: 1px solid rgb(234 211 167 / 0.65);
   border-radius: 50% 50% 0.9rem 0.9rem / 38% 38% 0.9rem 0.9rem;
@@ -557,7 +559,7 @@ img { display: block; max-width: 100%; }
 .countdown-section { position: relative; overflow: hidden; background: var(--burgundy); color: var(--cream); }
 .countdown-section::before { position: absolute; inset: 8%; border: 1px solid rgb(234 211 167 / 0.16); content: ""; pointer-events: none; }
 .countdown-section h2 { color: var(--cream); }
-.countdown-section .section-kicker { color: var(--gold-light); font-size: 0.8rem; }
+.countdown-section .section-kicker { color: var(--gold-light); font-size: 0.9rem; }
 .countdown { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 45rem; margin: 3.5rem auto 0; border-top: 1px solid rgb(234 211 167 / 0.32); border-bottom: 1px solid rgb(234 211 167 / 0.32); }
 .countdown > div { padding: 1.5rem 0.5rem; border-right: 1px solid rgb(234 211 167 / 0.22); }
 .countdown > div:last-child { border-right: 0; }
@@ -573,12 +575,13 @@ img { display: block; max-width: 100%; }
 .date-copy .weekday { margin: 0; color: var(--muted); font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; }
 .date-copy h2 { width: 100%; margin-top: 0.5rem; font-family: var(--serif); font-size: clamp(3.4rem, 8vw, 7.5rem); line-height: 0.98; text-align: center; text-wrap: balance; }
 .date-copy h2 span { color: var(--gold); }
-.lunar-date { width: 100%; margin: 2rem 0; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.08em; text-align: center; }
+.lunar-date { width: 100%; margin: 2rem 0; color: var(--muted); font-size: 1rem; letter-spacing: 0.08em; text-align: center; }
 .gold-button { display: inline-flex; min-height: 3.2rem; padding: 0.8rem 1.2rem; align-items: center; gap: 0.8rem; border: 1px solid var(--gold); background: var(--gold); color: var(--burgundy-deep); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; transition: transform 220ms ease, background 220ms ease; }
 .gold-button:hover { background: var(--gold-light); transform: translateY(-2px); }
 
 .locations-section { background: var(--cream); }
-.locations-section > .section-inner > h2 { max-width: 11ch; }
+.locations-section > .section-inner { text-align: center; }
+.locations-section > .section-inner > h2 { max-width: none; white-space: nowrap; }
 .location-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; margin-top: 4rem; }
 .location-card { position: relative; display: grid; min-height: 30rem; padding: 2rem; align-content: start; justify-items: center; border: 1px solid rgb(112 21 29 / 0.2); background: rgb(255 250 242 / 0.78); text-align: center; transition: transform 300ms ease, box-shadow 300ms ease; }
 .location-card:hover { box-shadow: 0 1.6rem 3rem rgb(77 24 17 / 0.12); transform: translateY(-0.4rem); }
@@ -590,6 +593,7 @@ img { display: block; max-width: 100%; }
 
 .gallery-section { background: var(--paper); }
 .gallery-heading { display: grid; justify-items: center; gap: 0.7rem; text-align: center; }
+.gallery-heading .section-kicker { font-size: 1rem; }
 .gallery-heading h2 { max-width: none; }
 .gallery-note { margin: 0; color: var(--muted); font-size: 0.72rem; text-align: center; }
 .gallery-section .section-inner { padding-top: clamp(2.5rem, 5vw, 4rem); }
@@ -664,6 +668,10 @@ dialog::backdrop { background: rgb(25 2 5 / 0.78); backdrop-filter: blur(0.4rem)
   :root { --page-gutter: clamp(1rem, 5vw, 1.5rem); }
   .opening-scene { height: 205vh; }
   .opening-sticky { min-height: 35rem; }
+  /* Giữ chuyển động mở cửa nhẹ và bám theo thao tác vuốt trên điện thoại. */
+  .opening-light-bloom, .opening-particles { display: none; }
+  .doorway, .door, .opening-glow, .opening-seam-light { transition: none; }
+  .door { filter: none; box-shadow: inset 0 0 3rem rgb(0 0 0 / 0.42); }
   .opening-copy { top: 5rem; left: 0; width: 100%; padding-inline: 1rem; text-align: center; transform: none; }
   .opening-copy h1 { margin-inline: auto; font-size: clamp(3.7rem, 16vw, 5rem); line-height: 0.82; text-align: left; }
   .opening-prompt { margin-top: 0.9rem; }
@@ -678,7 +686,7 @@ dialog::backdrop { background: rgb(25 2 5 / 0.78); backdrop-filter: blur(0.4rem)
   .doorway-copy p { margin-bottom: 0.45rem; font-size: 0.8rem; }
   .doorway-card .couple-names-card { font-size: clamp(3.2rem, 15vw, 4.6rem); line-height: 1; }
   .doorway-card small { margin-top: 0.8rem; font-size: 0.8rem; }
-  .doorway-photo { width: min(72vw, 20rem); height: 100%; justify-self: center; border-radius: 50% 50% 0.65rem 0.65rem / 34% 34% 0.65rem 0.65rem; }
+  .doorway-photo { width: min(64vw, 18rem); height: 100%; justify-self: center; border-radius: 50% 50% 0.65rem 0.65rem / 34% 34% 0.65rem 0.65rem; transform: translateX(16.667vw); }
   .door-panel { inset: 8% 6%; }
   .door-symbol { width: clamp(5rem, 23vw, 7rem); }
   .door-handle { width: 0.9rem; height: clamp(3.2rem, 14vw, 4.2rem); }
@@ -687,7 +695,6 @@ dialog::backdrop { background: rgb(25 2 5 / 0.78); backdrop-filter: blur(0.4rem)
   .door-handle::after { bottom: 0.38rem; }
   .door-left .door-handle { right: 0.55rem; }
   .door-right .door-handle { left: 0.55rem; }
-  .opening-particle:nth-child(2n) { display: none; }
   .site-header { grid-template-columns: 2.6rem 1fr auto; padding-top: 0.75rem; }
   .site-header nav { display: none; }
   .header-date { grid-column: 3; justify-self: end; font-size: 0.7rem; }
@@ -716,6 +723,10 @@ dialog::backdrop { background: rgb(25 2 5 / 0.78); backdrop-filter: blur(0.4rem)
   .gallery-arrow { width: 2.6rem; height: 2.6rem; }
   .site-footer { grid-template-columns: 1fr auto; }
   .site-footer > a { grid-column: 2; grid-row: 1; justify-self: end; }
+}
+
+@media (max-width: 40rem) {
+  .locations-section > .section-inner > h2 { white-space: normal; }
 }
 
 @media (prefers-reduced-motion: reduce) {
