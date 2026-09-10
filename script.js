@@ -76,7 +76,7 @@ const revealObserver = new IntersectionObserver((entries, observer) => {
 }, { threshold: 0.14 });
 document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
 
-const trackedSections = ["opening", "invitation", "details", "locations", "gallery", "gift"]
+const trackedSections = ["opening", "invitation", "details", "schedule", "locations", "gallery", "gift"]
   .map((id) => document.getElementById(id))
   .filter(Boolean);
 
@@ -245,11 +245,18 @@ lightboxImage.addEventListener("touchend", (event) => {
 
 const audio = document.querySelector("#wedding-audio");
 const musicToggle = document.querySelector(".music-toggle");
+const musicDiscBtn = document.querySelector(".music-disc-btn");
 
 function setMusicState(isPlaying) {
-  musicToggle.classList.toggle("is-playing", isPlaying);
-  musicToggle.setAttribute("aria-pressed", String(isPlaying));
-  musicToggle.setAttribute("aria-label", isPlaying ? "Tắt nhạc nền" : "Bật nhạc nền");
+  if (musicToggle) {
+    musicToggle.classList.toggle("is-playing", isPlaying);
+    musicToggle.setAttribute("aria-pressed", String(isPlaying));
+    musicToggle.setAttribute("aria-label", isPlaying ? "Tắt nhạc nền" : "Bật nhạc nền");
+  }
+  if (musicDiscBtn) {
+    musicDiscBtn.classList.toggle("is-playing", isPlaying);
+    musicDiscBtn.setAttribute("aria-label", isPlaying ? "Tắt nhạc nền" : "Bật nhạc nền");
+  }
 }
 
 function startMusic() {
@@ -262,7 +269,7 @@ function removeAutoplayFallback() {
 }
 
 function autoplayFallback(event) {
-  if (event.target.closest?.(".music-toggle")) return;
+  if (event.target.closest?.(".music-toggle") || event.target.closest?.(".music-disc-btn")) return;
   startMusic().then(removeAutoplayFallback).catch(() => undefined);
 }
 
@@ -271,17 +278,147 @@ startMusic().then(removeAutoplayFallback).catch(() => {
   document.addEventListener("keydown", autoplayFallback);
 });
 
-musicToggle.addEventListener("click", () => {
+function toggleAudio() {
   if (audio.paused) {
     startMusic().then(removeAutoplayFallback).catch(() => undefined);
   } else {
     audio.pause();
     setMusicState(false);
   }
-});
+}
+
+if (musicToggle) musicToggle.addEventListener("click", toggleAudio);
+if (musicDiscBtn) musicDiscBtn.addEventListener("click", toggleAudio);
 
 document.querySelectorAll("dialog").forEach((dialog) => {
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
   });
 });
+
+/* Xử lý sao chép STK & Toast */
+const toast = document.querySelector("#toast");
+let toastTimeout;
+
+function showToast(message) {
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add("is-show");
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    toast.classList.remove("is-show");
+  }, 2400);
+}
+
+document.querySelectorAll(".copy-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const textToCopy = btn.getAttribute("data-copy");
+    if (!textToCopy) return;
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(textToCopy);
+      } else {
+        const tempInput = document.createElement("input");
+        tempInput.value = textToCopy;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+      }
+      showToast(`Đã sao chép số tài khoản: ${textToCopy}`);
+    } catch (err) {
+      showToast(`Không thể sao chép tự động: ${textToCopy}`);
+    }
+  });
+});
+
+/* Hiệu ứng cánh hoa rơi nhẹ (Falling Petals Canvas) */
+(function setupPetalsCanvas() {
+  const canvas = document.querySelector("#petals-canvas");
+  if (!canvas) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReducedMotion) return;
+
+  const ctx = canvas.getContext("2d");
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
+
+  window.addEventListener("resize", () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+
+  const petalCount = window.innerWidth < 768 ? 16 : 28;
+  const petals = [];
+
+  class Petal {
+    constructor() {
+      this.reset(true);
+    }
+
+    reset(initial = false) {
+      this.x = Math.random() * width;
+      this.y = initial ? Math.random() * height : -20;
+      this.size = Math.random() * 8 + 7;
+      this.speedY = Math.random() * 0.9 + 0.55;
+      this.speedX = Math.random() * 0.7 - 0.35;
+      this.angle = Math.random() * Math.PI * 2;
+      this.angularSpeed = (Math.random() - 0.5) * 0.02;
+      this.flip = Math.random() * Math.PI * 2;
+      this.flipSpeed = Math.random() * 0.03 + 0.01;
+      this.opacity = Math.random() * 0.45 + 0.35;
+      // Gam màu hồng đào ánh son nhẹ nhàng
+      const colors = [
+        "rgba(242, 166, 178, ",
+        "rgba(235, 138, 155, ",
+        "rgba(217, 107, 126, ",
+        "rgba(247, 194, 203, "
+      ];
+      this.colorBase = colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    update() {
+      this.y += this.speedY;
+      this.x += Math.sin(this.angle) * 0.75 + this.speedX;
+      this.angle += this.angularSpeed;
+      this.flip += this.flipSpeed;
+
+      if (this.y > height + 20 || this.x < -40 || this.x > width + 40) {
+        this.reset();
+      }
+    }
+
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angle);
+      ctx.scale(1, Math.cos(this.flip));
+
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(this.size / 2, -this.size / 2, this.size, 0, 0, this.size);
+      ctx.bezierCurveTo(-this.size, 0, -this.size / 2, -this.size / 2, 0, 0);
+
+      ctx.fillStyle = `${this.colorBase}${this.opacity})`;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  for (let i = 0; i < petalCount; i++) {
+    petals.push(new Petal());
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < petals.length; i++) {
+      petals[i].update();
+      petals[i].draw();
+    }
+    requestAnimationFrame(render);
+  }
+
+  render();
+})();

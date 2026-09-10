@@ -12,11 +12,14 @@
   <body>
     <div class="grain" aria-hidden="true"></div>
 
+    <canvas id="petals-canvas" class="petals-canvas" aria-hidden="true"></canvas>
+
     <nav class="progress-rail" aria-label="Điều hướng tiến trình">
       <span class="progress-rail-line" aria-hidden="true"><i></i></span>
       <a class="is-active" href="#opening" aria-label="Về đầu trang" aria-current="step"><i></i></a>
       <a href="#invitation" aria-label="Lời mời"><i></i></a>
       <a href="#details" aria-label="Ngày cưới"><i></i></a>
+      <a href="#schedule" aria-label="Lịch trình"><i></i></a>
       <a href="#locations" aria-label="Địa điểm"><i></i></a>
       <a href="#gallery" aria-label="Album"><i></i></a>
       <a href="#gift" aria-label="Hộp quà mừng"><i></i></a>
@@ -57,6 +60,7 @@
       <nav aria-label="Điều hướng chính">
         <a href="#invitation">Lời mời</a>
         <a href="#details">Ngày cưới</a>
+        <a href="#schedule">Lịch trình</a>
         <a href="#locations">Địa điểm</a>
         <a href="#gallery">Album</a>
         <a href="#gift">Hộp quà</a>
@@ -66,6 +70,10 @@
 
     <main>
       <section class="paper-section invitation-section reveal" id="invitation" aria-labelledby="invitation-title">
+        <div class="ornament-corner corner-tl" aria-hidden="true"></div>
+        <div class="ornament-corner corner-tr" aria-hidden="true"></div>
+        <div class="ornament-corner corner-bl" aria-hidden="true"></div>
+        <div class="ornament-corner corner-br" aria-hidden="true"></div>
         <img class="section-flower flower-top-left" src="assets/wedding-doves.png" alt="" aria-hidden="true" />
         <div class="section-inner narrow-copy">
           <p class="section-kicker">Trân trọng báo tin vui</p>
@@ -100,6 +108,52 @@
             <h2 id="date-title">Tháng <span>10</span><br />2026</h2>
             <p class="lunar-date">Nhằm ngày 09 tháng 09 năm 2026 Âm lịch</p>
             <a class="gold-button" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=L%E1%BB%85%20th%C3%A0nh%20h%C3%B4n%20Thu%20H%C6%B0%C6%A1ng%20%26%20V%C4%83n%20L%C3%A2m&amp;dates=20261018%2F20261019&amp;details=Tr%C3%A2n%20tr%E1%BB%8Dng%20m%E1%BB%9Di%20b%E1%BA%A1n%20chung%20vui%20c%C3%B9ng%20Thu%20H%C6%B0%C6%A1ng%20v%C3%A0%20V%C4%83n%20L%C3%A2m.&amp;location=Ninh%20B%C3%ACnh" target="_blank" rel="noreferrer">Lưu ngày vào Google Calendar <span>↗</span></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="schedule-section reveal" id="schedule" aria-labelledby="schedule-title">
+        <div class="section-inner centered-copy">
+          <p class="section-kicker">Chương trình hôn lễ</p>
+          <h2 id="schedule-title">Lịch trình ngày vui</h2>
+          <div class="schedule-timeline">
+            <div class="timeline-line" aria-hidden="true"></div>
+
+            <article class="timeline-item">
+              <div class="timeline-badge">08:00</div>
+              <div class="timeline-content">
+                <div class="timeline-icon" aria-hidden="true">❦</div>
+                <h3>Lễ Vu Quy</h3>
+                <p>Nghi thức xuất giá trang trọng tại tư gia Nhà gái (Khánh Nhạc, Ninh Bình).</p>
+              </div>
+            </article>
+
+            <article class="timeline-item">
+              <div class="timeline-badge">09:30</div>
+              <div class="timeline-content">
+                <div class="timeline-icon" aria-hidden="true">囍</div>
+                <h3>Lễ Thành Hôn</h3>
+                <p>Nghi thức rước dâu và đón dâu về tư gia Nhà trai (Khánh Trung, Ninh Bình).</p>
+              </div>
+            </article>
+
+            <article class="timeline-item">
+              <div class="timeline-badge">11:00</div>
+              <div class="timeline-content">
+                <div class="timeline-icon" aria-hidden="true">🥂</div>
+                <h3>Khai Tiệc Mừng</h3>
+                <p>Chung vui nâng ly, đón nhận những lời chúc phúc ấm áp từ gia đình và bạn bè thân thương.</p>
+              </div>
+            </article>
+
+            <article class="timeline-item">
+              <div class="timeline-badge">12:30</div>
+              <div class="timeline-content">
+                <div class="timeline-icon" aria-hidden="true">📸</div>
+                <h3>Chụp Hình Kỷ Niệm</h3>
+                <p>Lưu giữ những khoảnh khắc rạng rỡ và gửi lời cảm tạ chân thành tới quý khách.</p>
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -177,15 +231,74 @@
       <button class="music-toggle" type="button" aria-label="Bật nhạc nền" aria-pressed="false">♪</button>
     </footer>
 
+    <!-- Nút phát nhạc đĩa than nổi -->
+    <div class="floating-music-wrapper">
+      <button class="music-disc-btn" type="button" aria-label="Bật/Tắt nhạc nền" title="Bật/Tắt nhạc nền">
+        <div class="vinyl-disc">
+          <div class="vinyl-groove"></div>
+          <div class="vinyl-center">
+            <span class="vinyl-note">♫</span>
+          </div>
+        </div>
+        <div class="music-waves" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+      </button>
+    </div>
+
+    <!-- Hộp quà mừng kèm thông tin tài khoản và nút copy -->
     <dialog class="gift-dialog" id="gift-dialog" aria-labelledby="gift-dialog-title">
       <button class="dialog-close" type="button" aria-label="Đóng hộp quà mừng">×</button>
       <p class="section-kicker">Hộp quà mừng</p>
       <h2 id="gift-dialog-title">Gửi chút yêu thương</h2>
       <div class="qr-grid">
-        <article><h3>Cô dâu<br /><span>Thu Hương</span></h3><img src="assets/qr-bride-code.png" alt="Mã QR mừng cưới cô dâu Thu Hương" /></article>
-        <article><h3>Chú rể<br /><span>Văn Lâm</span></h3><img src="assets/qr-groom-code.png" alt="Mã QR mừng cưới chú rể Văn Lâm" /></article>
+        <article class="gift-card">
+          <h3>Cô dâu<br /><span>Thu Hương</span></h3>
+          <img src="assets/qr-bride-code.png" alt="Mã QR mừng cưới cô dâu Thu Hương" />
+          <div class="bank-details">
+            <div class="bank-row">
+              <span class="bank-label">Ngân hàng:</span>
+              <span class="bank-value">Vietcombank</span>
+            </div>
+            <div class="bank-row">
+              <span class="bank-label">Chủ TK:</span>
+              <span class="bank-value">TRINH THI THU HUONG</span>
+            </div>
+            <div class="bank-row bank-row-account">
+              <span class="bank-label">Số TK:</span>
+              <span class="bank-value account-number">1013491322</span>
+            </div>
+            <button class="copy-btn" type="button" data-copy="1013491322">
+              <span class="copy-icon">⎘</span> Sao chép số tài khoản
+            </button>
+          </div>
+        </article>
+
+        <article class="gift-card">
+          <h3>Chú rể<br /><span>Văn Lâm</span></h3>
+          <img src="assets/qr-groom-code.png" alt="Mã QR mừng cưới chú rể Văn Lâm" />
+          <div class="bank-details">
+            <div class="bank-row">
+              <span class="bank-label">Ngân hàng:</span>
+              <span class="bank-value">MB Bank</span>
+            </div>
+            <div class="bank-row">
+              <span class="bank-label">Chủ TK:</span>
+              <span class="bank-value">VU VAN LAM</span>
+            </div>
+            <div class="bank-row bank-row-account">
+              <span class="bank-label">Số TK:</span>
+              <span class="bank-value account-number">0349692296</span>
+            </div>
+            <button class="copy-btn" type="button" data-copy="0349692296">
+              <span class="copy-icon">⎘</span> Sao chép số tài khoản
+            </button>
+          </div>
+        </article>
       </div>
     </dialog>
+
+    <div id="toast" class="toast" role="alert" aria-live="polite"></div>
 
     <dialog class="lightbox" id="lightbox" aria-label="Xem ảnh cưới" aria-describedby="lightbox-counter">
       <button class="dialog-close" type="button" aria-label="Đóng ảnh">×</button>
