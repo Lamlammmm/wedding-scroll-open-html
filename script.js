@@ -143,8 +143,8 @@ function updateGallery() {
   const length = galleryCards.length;
   galleryCards.forEach((card, index) => {
     const relativeIndex = (index - galleryIndex + length) % length;
-    const position = relativeIndex === 0 ? "active" : relativeIndex === 1 ? "next" : relativeIndex === length - 1 ? "prev" : "hidden";
-    card.classList.remove("is-active", "is-next", "is-prev", "is-hidden");
+    const position = relativeIndex === 0 ? "active" : relativeIndex === 1 ? "next" : relativeIndex === length - 1 ? "prev" : relativeIndex === 2 ? "far-next" : relativeIndex === length - 2 ? "far-prev" : "hidden";
+    card.classList.remove("is-active", "is-next", "is-prev", "is-far-next", "is-far-prev", "is-hidden");
     card.classList.add(`is-${position}`);
     card.tabIndex = position === "hidden" ? -1 : 0;
     card.setAttribute("aria-hidden", position === "hidden" ? "true" : "false");
@@ -202,7 +202,8 @@ galleryCards.forEach((card, index) => {
   card.addEventListener("click", (event) => {
     if (card.classList.contains("gallery-card") && !card.classList.contains("is-active")) {
       event.preventDefault();
-      moveGallery(card.classList.contains("is-next") ? 1 : -1);
+      galleryIndex = index;
+      updateGallery();
       return;
     }
     updateLightbox(index);
