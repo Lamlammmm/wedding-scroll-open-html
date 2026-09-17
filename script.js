@@ -138,6 +138,35 @@ const galleryCards = [...document.querySelectorAll(".gallery-card")];
 let galleryIndex = 0;
 let lightboxIndex = 0;
 let lightboxTouchStart = null;
+const thumbnailStrip = document.querySelector(".lightbox-thumbnails");
+const thumbnailButtons = galleryCards.map((card, index) => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "lightbox-thumbnail";
+  button.setAttribute("aria-label", `Xem ảnh ${index + 1}`);
+  const image = document.createElement("img");
+  image.alt = "";
+  image.loading = "lazy";
+  image.decoding = "async";
+  image.dataset.src = card.dataset.lightbox;
+  button.appendChild(image);
+  button.addEventListener("click", () => updateLightbox(index));
+  thumbnailStrip.appendChild(button);
+  return button;
+});
+
+function refreshThumbnails() {
+  thumbnailButtons.forEach((button, index) => {
+    button.setAttribute("aria-current", String(index === lightboxIndex));
+    const image = button.querySelector("img");
+    if (image.dataset.src) {
+      image.src = image.dataset.src;
+      delete image.dataset.src;
+    }
+  });
+  const active = thumbnailButtons[lightboxIndex];
+  thumbnailStrip.scrollTo({ left: active.offsetLeft - thumbnailStrip.offsetLeft - (thumbnailStrip.clientWidth - active.offsetWidth) / 2, behavior: "smooth" });
+}
 
 function updateGallery() {
   const length = galleryCards.length;
@@ -178,6 +207,7 @@ function updateLightbox(index) {
   lightboxCaption.textContent = card.dataset.caption;
   lightboxCaption.classList.toggle("couple-names", card.dataset.caption === "Thu Hương & Văn Lâm");
   lightboxCounter.textContent = `${lightboxIndex + 1} / ${galleryCards.length}`;
+  if (lightbox.open) refreshThumbnails();
   lightboxPrev.setAttribute("aria-label", `Xem ảnh trước: ${previousCard.dataset.caption}`);
   lightboxNext.setAttribute("aria-label", `Xem ảnh tiếp theo: ${nextCard.dataset.caption}`);
 
@@ -215,6 +245,7 @@ galleryCards.forEach((card, index) => {
     }
     updateLightbox(index);
     lightbox.showModal();
+    refreshThumbnails();
   });
 });
 
