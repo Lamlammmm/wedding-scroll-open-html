@@ -148,6 +148,13 @@ function updateGallery() {
     card.classList.add(`is-${position}`);
     card.tabIndex = position === "hidden" ? -1 : 0;
     card.setAttribute("aria-hidden", position === "hidden" ? "true" : "false");
+    if (position !== "hidden") {
+      const image = card.querySelector("img");
+      if (image.dataset.src) {
+        image.src = image.dataset.src;
+        delete image.dataset.src;
+      }
+    }
   });
 }
 
