@@ -201,8 +201,18 @@ function refreshThumbnails() {
 }
 
 function updateGallery() {
-  galleryCards.forEach((card) => {
-    card.classList.remove("is-active", "is-next", "is-prev", "is-far-next", "is-far-prev", "is-hidden");
+  galleryCards.forEach((card, index) => {
+    const angle = ((index - galleryIndex) / galleryCards.length) * 360;
+    const state = index === galleryIndex ? "is-active" : "is-wheel";
+    const normalizedAngle = ((angle % 360) + 360) % 360;
+    const isBack = normalizedAngle > 90 && normalizedAngle < 270;
+    const frontDistance = Math.min(Math.abs(angle), 360 - Math.abs(angle));
+    const clarity = Math.max(0.18, 1 - frontDistance / 180);
+    card.classList.remove("is-active", "is-next", "is-prev", "is-far-next", "is-far-prev", "is-hidden", "is-back");
+    card.classList.add(state);
+    if (isBack) card.classList.add("is-back");
+    card.style.setProperty("--wheel-angle", `${angle}deg`);
+    card.style.setProperty("--wheel-clarity", clarity.toFixed(3));
     card.tabIndex = 0;
     card.setAttribute("aria-hidden", "false");
     const image = card.querySelector("img");
@@ -216,6 +226,18 @@ function updateGallery() {
 function moveGallery(direction) {
   galleryIndex = (galleryIndex + direction + galleryCards.length) % galleryCards.length;
   updateGallery();
+  restartGalleryTimer();
+}
+
+let galleryTimer;
+function restartGalleryTimer() {
+  window.clearInterval(galleryTimer);
+  galleryTimer = window.setInterval(() => {
+    const bounds = galleryGrid.getBoundingClientRect();
+    if (document.hidden || lightbox.open || bounds.bottom <= 0 || bounds.top >= window.innerHeight
+      || galleryGrid.contains(document.activeElement)) return;
+    moveGallery(1);
+  }, 5000);
 }
 
 function updateLightbox(index) {
@@ -250,6 +272,8 @@ function moveLightbox(direction) {
 document.querySelector(".gallery-arrow-prev").addEventListener("click", () => moveGallery(-1));
 document.querySelector(".gallery-arrow-next").addEventListener("click", () => moveGallery(1));
 updateGallery();
+restartGalleryTimer();
+lightbox.addEventListener("close", restartGalleryTimer);
 
 giftTrigger.addEventListener("click", () => {
   giftDialog.showModal();
@@ -267,6 +291,7 @@ galleryCards.forEach((card, index) => {
       event.preventDefault();
       galleryIndex = index;
       updateGallery();
+      restartGalleryTimer();
       return;
     }
     updateLightbox(index);
