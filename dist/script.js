@@ -50,8 +50,8 @@ if (openingParticles) {
   const fragment = document.createDocumentFragment();
   const randomBetween = (minimum, maximum) => Math.random() * (maximum - minimum) + minimum;
 
-  for (let index = 0; index < 42; index += 1) {
-    const isPetal = index >= 30;
+  for (let index = 0; index < 24; index += 1) {
+    const isPetal = index >= 18;
     const particle = document.createElement("span");
     particle.className = `opening-particle ${isPetal ? "opening-particle-petal" : "opening-particle-dust"}`;
     particle.style.setProperty("--particle-x", `${randomBetween(2, 98).toFixed(2)}%`);
@@ -59,7 +59,7 @@ if (openingParticles) {
     particle.style.setProperty("--particle-duration", `${randomBetween(isPetal ? 9 : 8, isPetal ? 17 : 18).toFixed(2)}s`);
     particle.style.setProperty("--particle-delay", `${randomBetween(-18, 0).toFixed(2)}s`);
     particle.style.setProperty("--particle-drift", `${randomBetween(-140, 140).toFixed(1)}px`);
-    particle.style.setProperty("--particle-opacity", randomBetween(0.22, isPetal ? 0.68 : 0.72).toFixed(2));
+    particle.style.setProperty("--particle-opacity", randomBetween(0.12, isPetal ? 0.38 : 0.34).toFixed(2));
     particle.style.setProperty("--particle-spin", `${randomBetween(240, 780).toFixed(1)}deg`);
     fragment.appendChild(particle);
   }

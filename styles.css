@@ -197,7 +197,7 @@ img { display: block; max-width: 100%; }
   inset: 0;
   z-index: 4;
   overflow: hidden;
-  opacity: calc(0.18 + var(--open-progress) * 0.82);
+  opacity: calc(0.12 + var(--open-progress) * 0.58);
   pointer-events: none;
 }
 
@@ -213,7 +213,7 @@ img { display: block; max-width: 100%; }
   height: var(--particle-size);
   border-radius: 50%;
   background: #ffe6aa;
-  box-shadow: 0 0 0.45rem rgb(255 216 139 / 0.72);
+  box-shadow: 0 0 0.3rem rgb(255 216 139 / 0.42);
   animation: opening-dust-rise var(--particle-duration) linear var(--particle-delay) infinite;
 }
 
