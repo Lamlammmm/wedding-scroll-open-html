@@ -1125,7 +1125,7 @@ dialog::backdrop { background: rgb(25 2 5 / 0.78); backdrop-filter: blur(0.4rem)
 .gallery-carousel .gallery-arrow { display: none; }
 
 @media (max-width: 48rem) {
-  .gallery-grid { column-count: 1; column-gap: 0; }
+  .gallery-grid { column-count: 2; column-gap: 0.6rem; }
   .gallery-card,
   .gallery-card.is-active,
   .gallery-card.is-prev,
