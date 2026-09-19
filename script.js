@@ -134,6 +134,38 @@ const lightboxCaption = document.querySelector(".lightbox-caption");
 const lightboxCounter = document.querySelector(".lightbox-counter");
 const lightboxPrev = document.querySelector(".lightbox-arrow-prev");
 const lightboxNext = document.querySelector(".lightbox-arrow-next");
+const desiredGalleryImages = [
+  "linh1900.jpg", "linh1785.jpg", "linh2172.jpg", "linh1911.jpg", "linh1887.jpg", "linh1919.jpg",
+  "linh1831.jpg", "linh2187.jpg", "linh1394.jpg", "linh2183.jpg", "linh2010.jpg", "linh2020.jpg",
+  "linh2032.jpg", "linh1946.jpg", "linh1972.jpg", "linh2054.jpg", "linh2089.jpg", "linh2130.jpg",
+  "linh1892.jpg", "linh2093.jpg", "linh1862.jpg", "linh1876.jpg", "linh1824.jpg", "linh1839.jpg",
+  "linh1865.jpg", "linh1895.jpg", "linh1922.jpg", "linh1914.jpg", "linh1845.jpg", "linh1938.jpg",
+  "linh1877.jpg", "linh1857.jpg", "linh1920.jpg", "linh1882.jpg"
+];
+const galleryGrid = document.querySelector(".gallery-grid");
+if (galleryGrid) {
+  const existingCards = new Map([...galleryGrid.querySelectorAll(".gallery-card")].map((card) => {
+    const src = card.querySelector("img")?.dataset.src || "";
+    return [src.split("/").pop().split("?")[0].toLowerCase(), card];
+  }));
+  galleryGrid.innerHTML = "";
+  desiredGalleryImages.forEach((name, index) => {
+    const card = existingCards.get(name) || document.createElement("button");
+    card.className = "gallery-card";
+    card.type = "button";
+    card.dataset.lightbox = `assets/photos/album/${name}`;
+    card.dataset.caption = "Thu Hương & Văn Lâm";
+    const img = card.querySelector("img") || document.createElement("img");
+    img.dataset.src = `assets/photos/album/${name}`;
+    img.removeAttribute("src");
+    img.alt = `Ảnh cưới Thu Hương và Văn Lâm – ảnh ${String(index + 1).padStart(2, "0")}`;
+    img.decoding = "async";
+    const label = card.querySelector("span") || document.createElement("span");
+    label.innerHTML = `${String(index + 1).padStart(2, "0")} · <b class="couple-names couple-names-gallery">Thu Hương &amp; Văn Lâm</b>`;
+    card.replaceChildren(img, label);
+    galleryGrid.appendChild(card);
+  });
+}
 const galleryCards = [...document.querySelectorAll(".gallery-card")];
 let galleryIndex = 0;
 let lightboxIndex = 0;
